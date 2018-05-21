@@ -1,0 +1,3 @@
+add_executable(motor_control_spec motor_control_spec.cpp)
+target_link_libraries(motor_control_spec motor_control gtest_main gmock pthread)
+target_include_directories(motor_control_spec PUBLIC ${TEST_SUPPORT_DIR})

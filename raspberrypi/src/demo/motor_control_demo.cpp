@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <termios.h>
+
 #include "motor_control.h"
 
 #define KEY_SPACEBAR    0x20
@@ -20,7 +21,12 @@ void quit(int sig)
 
 int main()
 {
-    PwmMotorControl motor_control(9, 2, 5);     // GPIO PWM pin setup for Raspberry Pi
+    std::unique_ptr<GpioPin> pin_pwm = std::make_unique<GpioPin>(9);
+    std::unique_ptr<GpioPin> pin_direction_1 = std::make_unique<GpioPin>(2);
+    std::unique_ptr<GpioPin> pin_direction_2 = std::make_unique<GpioPin>(5);
+    PwmMotorControl motor_control(std::move(pin_pwm),
+                                  std::move(pin_direction_1),
+                                  std::move(pin_direction_2));
 
     signal(SIGINT, quit);
 
