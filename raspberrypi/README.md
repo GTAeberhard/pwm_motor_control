@@ -1,6 +1,12 @@
-# Simple Demo for PWM Motor Control
+# PWM Motor Control for the Raspberry Pi
 
-This demo can be used as a quick demonstration on how to use
+The Raspberry Pi implementation of the PWM Motor Control and the GPIO pins
+use the [WiringPi](http://www.wiringpi.com/) library.  Follow the instructions
+on the WiringPi website for installation.
+
+## Simple Demo for PWM Motor Control
+
+The demo can be used as a quick demonstration on how to use
 the PWM motor control class.  It can also be used to do
 some testing to make sure your electrical setup is working
 correctly before attempting to do something more complicated.
