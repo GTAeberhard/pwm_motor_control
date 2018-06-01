@@ -1,8 +1,2 @@
-add_library (gpio_raspberrypi
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/gpio/gpio_pwm_raspberrypi.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/gpio/gpio_raspberrypi.cpp)
-target_include_directories (gpio_raspberrypi PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/gpio/)
-target_link_libraries (gpio_raspberrypi LINK_PUBLIC pthread ${WIRINGPI_LIB} rt crypt gpio)
-
-add_executable (motor_control_demo ${CMAKE_CURRENT_SOURCE_DIR}/src/demo/motor_control_demo.cpp)
-target_link_libraries (motor_control_demo LINK_PUBLIC gpio_raspberrypi motor_control)
+add_subdirectory(demo)
+add_subdirectory(gpio)
