@@ -4,6 +4,8 @@
 #include <signal.h>
 #include <termios.h>
 
+#include "gpio_raspberrypi.h"
+#include "gpio_pwm_raspberrypi.h"
 #include "motor_control.h"
 
 #define KEY_SPACEBAR    0x20
@@ -21,9 +23,9 @@ void quit(int sig)
 
 int main()
 {
-    std::unique_ptr<GpioPin> pin_pwm = std::make_unique<GpioPin>(9);
-    std::unique_ptr<GpioPin> pin_direction_1 = std::make_unique<GpioPin>(2);
-    std::unique_ptr<GpioPin> pin_direction_2 = std::make_unique<GpioPin>(5);
+    std::unique_ptr<RaspberryPiGpioPwmPin> pin_pwm = std::make_unique<RaspberryPiGpioPwmPin>(9);
+    std::unique_ptr<RaspberryPiGpioPin> pin_direction_1 = std::make_unique<RaspberryPiGpioPin>(2);
+    std::unique_ptr<RaspberryPiGpioPin> pin_direction_2 = std::make_unique<RaspberryPiGpioPin>(5);
     PwmMotorControl motor_control(std::move(pin_pwm),
                                   std::move(pin_direction_1),
                                   std::move(pin_direction_2));

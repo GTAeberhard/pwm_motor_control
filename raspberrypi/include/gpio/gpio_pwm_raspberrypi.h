@@ -1,15 +1,14 @@
-#include <wiringpi>
-#include "gpio.h"
+#include <wiringPi.h>
+#include "gpio_pwm.h"
 
-class RaspberryPiGpioPwmPin : public GpioPin
+class RaspberryPiGpioPwmPin : public GpioPwmPin
 {
 public:
-    RaspberryPiGpioPwmPin(uint8_t pin_numner);
+    RaspberryPiGpioPwmPin(uint8_t pin_number);
 
-    ~GpioPwmPin() {}
+    ~RaspberryPiGpioPwmPin() {}
 
 private:
-    void WriteToPin(const uint8_t value);
-    void WriteHighToPin();
-    void WriteLowToPin();
+    void WriteDutyCycleToPin(const uint16_t value);
+    void SetRangeOnDevice(const uint16_t range);
 };

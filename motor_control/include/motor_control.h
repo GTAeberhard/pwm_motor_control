@@ -9,9 +9,6 @@
 #include <gpio.h>
 #include <gpio_pwm.h>
 
-const uint8_t HIGH = 255U;
-const uint8_t LOW = 0U;
-
 class PwmMotorControl {
 public:
     PwmMotorControl(std::unique_ptr<GpioPwmPin> pin_pwm,

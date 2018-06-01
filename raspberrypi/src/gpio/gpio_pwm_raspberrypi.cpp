@@ -1,22 +1,19 @@
 #include "gpio_pwm_raspberrypi.h"
 
-RaspberryPiGpioPwmPin::RaspberryPiGpioPwmPin(uint8_t pin_numner)
-    : GpioPin(pin_numner)
+RaspberryPiGpioPwmPin::RaspberryPiGpioPwmPin(uint8_t pin_number)
+    : GpioPwmPin(pin_number)
 {
     wiringPiSetupGpio();
+    pinMode(pin_, PWM_OUTPUT);
+
 }
 
-void RaspberryPiGpioPwmPin::WriteToPin(const uint8_t value)
+void RaspberryPiGpioPwmPin::WriteDutyCycleToPin(const uint16_t value)
 {
     pwmWrite(pin_, value);
 }
 
-void RaspberryPiGpioPwmPin::WriteHighToPin()
+void RaspberryPiGpioPwmPin::SetRangeOnDevice(const uint16_t range)
 {
-    pwmWrite(pin_, 1024);
-}
-
-void RaspberryPiGpioPwmPin::WriteLowToPin()
-{
-    pwmWrite(pin_, 0);
+    pwmSetRange(range);
 }

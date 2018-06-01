@@ -16,12 +16,12 @@ execute_process(COMMAND "${CMAKE_COMMAND}" --build .
 add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
                  "${CMAKE_BINARY_DIR}/googletest-build")
 
+add_subdirectory(gpio)
+add_subdirectory(motor_control)
+add_subdirectory(test)
+
 find_library(WIRINGPI_LIB wiringPi)
 
 IF(WIRINGPI_LIB)
     add_subdirectory(raspberrypi)
 ENDIF()
-
-add_subdirectory(gpio)
-add_subdirectory(motor_control)
-add_subdirectory(test)
