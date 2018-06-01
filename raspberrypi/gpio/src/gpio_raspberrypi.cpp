@@ -3,7 +3,7 @@
 RaspberryPiGpioPin::RaspberryPiGpioPin(uint8_t pin_number)
     : GpioPin(pin_number)
 {
-    wiringPiSetupGpio();
+    wiringPiSetup();
     pinMode(pin_, OUTPUT);
 }
 

@@ -23,8 +23,8 @@ void quit(int sig)
 
 int main()
 {
-    std::unique_ptr<RaspberryPiGpioPwmPin> pin_pwm = std::make_unique<RaspberryPiGpioPwmPin>(9);
-    std::unique_ptr<RaspberryPiGpioPin> pin_direction_1 = std::make_unique<RaspberryPiGpioPin>(2);
+    std::unique_ptr<RaspberryPiGpioPwmPin> pin_pwm = std::make_unique<RaspberryPiGpioPwmPin>(1);
+    std::unique_ptr<RaspberryPiGpioPin> pin_direction_1 = std::make_unique<RaspberryPiGpioPin>(4);
     std::unique_ptr<RaspberryPiGpioPin> pin_direction_2 = std::make_unique<RaspberryPiGpioPin>(5);
     PwmMotorControl motor_control(std::move(pin_pwm),
                                   std::move(pin_direction_1),
