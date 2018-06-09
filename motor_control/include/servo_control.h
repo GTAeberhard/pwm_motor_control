@@ -1,5 +1,5 @@
-#ifndef MOTOR_CONTROL_H
-#define MOTOR_CONTROL_H
+#ifndef SERVO_CONTROL_H
+#define SERVO_CONTROL_H
 
 #include <cstdint>
 #include <cmath>
@@ -9,13 +9,13 @@
 #include <gpio.h>
 #include <gpio_pwm.h>
 
-class PwmMotorControl {
+class PwmServoControl {
 public:
-    PwmMotorControl(std::unique_ptr<GpioPwmPin> pin_pwm,
+    PwmServoControl(std::unique_ptr<GpioPwmPin> pin_pwm,
                     std::unique_ptr<GpioPin> pin_direction_1,
                     std::unique_ptr<GpioPin> pin_direction_2);
 
-    void SetSpeed(int8_t motor_speed);
+    void SetAngle(int16_t angle);
 
 private:
     std::unique_ptr<GpioPwmPin> pin_pwm_;

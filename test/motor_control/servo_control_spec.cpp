@@ -2,13 +2,13 @@
 
 #define private public
 #define protected public
-#include "motor_control.h"
+#include "servo_control.h"
 #undef protected
 #undef private
 
 #include "gpio_mock.h"
 
-class PwmMotorControlTest : public ::testing::Test
+class PwmServoControlTest : public ::testing::Test
 {
 protected:
     virtual void SetUp()
@@ -25,7 +25,7 @@ protected:
         pin_output_direction_1_raw_ptr_ = output_direction_1.get();
         pin_output_direction_2_raw_ptr_ = output_direction_2.get();
 
-        motor_control = std::make_unique<PwmMotorControl>(std::move(output_pwm),
+        servo_control = std::make_unique<PwmServoControl>(std::move(output_pwm),
                                                           std::move(output_direction_1),
                                                           std::move(output_direction_2));
     }
@@ -34,64 +34,93 @@ protected:
     uint8_t pin_output_direction_1;
     uint8_t pin_output_direction_2;
 
-    std::unique_ptr<PwmMotorControl> motor_control;
+    std::unique_ptr<PwmServoControl> servo_control;
 
     GpioPwmPinMock* pin_output_pwm_raw_ptr_;
     GpioPinMock* pin_output_direction_1_raw_ptr_;
     GpioPinMock* pin_output_direction_2_raw_ptr_;
 };
 
-TEST_F(PwmMotorControlTest, Initialize)
+TEST_F(PwmServoControlTest, Initialize)
 {
-    EXPECT_EQ(motor_control->pin_pwm_->pin_, pin_output_pwm);
-    EXPECT_EQ(motor_control->pin_direction_1_->pin_, pin_output_direction_1);
-    EXPECT_EQ(motor_control->pin_direction_2_->pin_, pin_output_direction_2);
+    EXPECT_EQ(servo_control->pin_pwm_->pin_, pin_output_pwm);
+    EXPECT_EQ(servo_control->pin_direction_1_->pin_, pin_output_direction_1);
+    EXPECT_EQ(servo_control->pin_direction_2_->pin_, pin_output_direction_2);
 }
 
-TEST_F(PwmMotorControlTest, ForwardPercentPower50)
+TEST_F(PwmServoControlTest, Angle_0)
 {
-    int8_t percent_motor_power = 50;
-
-    uint8_t expected_pwm_value = 128U;
+    uint8_t expected_pwm_value = 0U;
     EXPECT_CALL(*pin_output_pwm_raw_ptr_, WriteDutyCycleToPin(expected_pwm_value)).Times(1);
     EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteHighToPin()).Times(1);
     EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteLowToPin()).Times(1);
 
-    motor_control->SetSpeed(percent_motor_power);
+    int8_t desired_angle = 0;
+    servo_control->SetAngle(desired_angle);
 }
 
-TEST_F(PwmMotorControlTest, BackwardPercentPower50)
+TEST_F(PwmServoControlTest, AngleMaxPositive)
 {
-    int8_t percent_motor_power = -50;
-
-    uint8_t expected_pwm_value = 128U;
-    EXPECT_CALL(*pin_output_pwm_raw_ptr_, WriteDutyCycleToPin(expected_pwm_value)).Times(1);
-    EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteLowToPin()).Times(1);
-    EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteHighToPin()).Times(1);
-
-    motor_control->SetSpeed(percent_motor_power);
-}
-
-TEST_F(PwmMotorControlTest, LargerPositive100Percent)
-{
-    int8_t percent_motor_power = 110;
-
     uint8_t expected_pwm_value = 255U;
     EXPECT_CALL(*pin_output_pwm_raw_ptr_, WriteDutyCycleToPin(expected_pwm_value)).Times(1);
     EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteHighToPin()).Times(1);
     EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteLowToPin()).Times(1);
 
-    motor_control->SetSpeed(percent_motor_power);
+    int16_t desired_angle = 180;
+    servo_control->SetAngle(desired_angle);
 }
 
-TEST_F(PwmMotorControlTest, LowerNegative100Percent)
+TEST_F(PwmServoControlTest, AngleMaxNegative)
 {
-    int8_t percent_motor_power = -110;
-
     uint8_t expected_pwm_value = 255U;
     EXPECT_CALL(*pin_output_pwm_raw_ptr_, WriteDutyCycleToPin(expected_pwm_value)).Times(1);
     EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteLowToPin()).Times(1);
     EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteHighToPin()).Times(1);
 
-    motor_control->SetSpeed(percent_motor_power);
+    int16_t desired_angle = -180;
+    servo_control->SetAngle(desired_angle);
+}
+
+TEST_F(PwmServoControlTest, AnglePositive_90)
+{
+    uint8_t expected_pwm_value = 128U;
+    EXPECT_CALL(*pin_output_pwm_raw_ptr_, WriteDutyCycleToPin(expected_pwm_value)).Times(1);
+    EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteHighToPin()).Times(1);
+    EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteLowToPin()).Times(1);
+
+    int16_t desired_angle = 90;
+    servo_control->SetAngle(desired_angle);
+}
+
+TEST_F(PwmServoControlTest, AngleNegative_90)
+{
+    uint8_t expected_pwm_value = 128U;
+    EXPECT_CALL(*pin_output_pwm_raw_ptr_, WriteDutyCycleToPin(expected_pwm_value)).Times(1);
+    EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteLowToPin()).Times(1);
+    EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteHighToPin()).Times(1);
+
+    int16_t desired_angle = -90;
+    servo_control->SetAngle(desired_angle);
+}
+
+TEST_F(PwmServoControlTest, LargerAnglePositive)
+{
+    uint8_t expected_pwm_value = 255U;
+    EXPECT_CALL(*pin_output_pwm_raw_ptr_, WriteDutyCycleToPin(expected_pwm_value)).Times(1);
+    EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteHighToPin()).Times(1);
+    EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteLowToPin()).Times(1);
+
+    int16_t desired_angle = 200;
+    servo_control->SetAngle(desired_angle);
+}
+
+TEST_F(PwmServoControlTest, LargerAngleNegative)
+{
+    uint8_t expected_pwm_value = 255U;
+    EXPECT_CALL(*pin_output_pwm_raw_ptr_, WriteDutyCycleToPin(expected_pwm_value)).Times(1);
+    EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteLowToPin()).Times(1);
+    EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteHighToPin()).Times(1);
+
+    int16_t desired_angle = -200;
+    servo_control->SetAngle(desired_angle);
 }

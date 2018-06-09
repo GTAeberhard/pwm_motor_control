@@ -1,6 +1,6 @@
-#include "motor_control.h"
+#include "servo_control.h"
 
-PwmMotorControl::PwmMotorControl(std::unique_ptr<GpioPwmPin> pin_pwm,
+PwmServoControl::PwmServoControl(std::unique_ptr<GpioPwmPin> pin_pwm,
                                  std::unique_ptr<GpioPin> pin_direction_1,
                                  std::unique_ptr<GpioPin> pin_direction_2)
     : pin_pwm_(std::move(pin_pwm)),
@@ -9,12 +9,13 @@ PwmMotorControl::PwmMotorControl(std::unique_ptr<GpioPwmPin> pin_pwm,
 {
 }
 
-void PwmMotorControl::SetSpeed(int8_t motor_speed)
+void PwmServoControl::SetAngle(int16_t angle)
 {
-    uint8_t corrected_motor_speed = std::abs(motor_speed);
-    corrected_motor_speed = std::min(corrected_motor_speed, (uint8_t) 100U);
+    uint8_t corrected_angle = std::abs(angle);
+    corrected_angle = std::min(corrected_angle, (uint8_t) 180U);
+    float percent_displacement = (float) corrected_angle / 180.0F;
 
-    if (motor_speed >= 0)
+    if (angle >= 0)
     {
         pin_direction_1_->WriteHigh();
         pin_direction_2_->WriteLow();
@@ -25,5 +26,5 @@ void PwmMotorControl::SetSpeed(int8_t motor_speed)
         pin_direction_2_->WriteHigh();
     }
 
-    pin_pwm_->WriteDutyCycle(corrected_motor_speed / 100.0F);
+    pin_pwm_->WriteDutyCycle(percent_displacement);
 }

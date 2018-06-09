@@ -33,7 +33,7 @@ int main()
     signal(SIGINT, quit);
 
     puts("------------------------------------------------------------");
-    puts("Press <SPACEBAR> to turn the motor forward for 1 second.");
+    puts("Press <SPACEBAR> to turn the motor forwards for 1 second.");
     puts("Press <BACKSPACE> to turn the motor backwards for 1 second.");
     puts("------------------------------------------------------------");
 
@@ -60,15 +60,15 @@ int main()
         {
         case KEY_SPACEBAR:
             puts("Running motor forward for 1 second...");
-            motor_control.SetMotorSpeed(100);
+            motor_control.SetSpeed(100);
             sleep(5);
-            motor_control.SetMotorSpeed(0);
+            motor_control.SetSpeed(0);
             break;
         case KEY_BACKSPACE:
             puts("Running motor backward for 1 second...");
-            motor_control.SetMotorSpeed(-100);
+            motor_control.SetSpeed(-100);
             sleep(5);
-            motor_control.SetMotorSpeed(0);
+            motor_control.SetSpeed(0);
             break;
         default:
             break;
