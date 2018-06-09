@@ -60,14 +60,14 @@ int main()
         {
         case KEY_SPACEBAR:
             puts("Running motor forward for 1 second...");
-            motor_control.SetMotorSpeed(50);
-            usleep(1000);
+            motor_control.SetMotorSpeed(100);
+            sleep(5);
             motor_control.SetMotorSpeed(0);
             break;
         case KEY_BACKSPACE:
             puts("Running motor backward for 1 second...");
-            motor_control.SetMotorSpeed(-50);
-            usleep(1000);
+            motor_control.SetMotorSpeed(-100);
+            sleep(5);
             motor_control.SetMotorSpeed(0);
             break;
         default:

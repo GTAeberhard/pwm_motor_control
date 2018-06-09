@@ -15,9 +15,11 @@ void RaspberryPiGpioPin::WriteToPin(const uint8_t value)
 void RaspberryPiGpioPin::WriteHighToPin()
 {
     digitalWrite(pin_, HIGH);
+    std::cout << "Writing HIGH on pin " <<  (int) pin_ << std::endl;
 }
 
 void RaspberryPiGpioPin::WriteLowToPin()
 {
     digitalWrite(pin_, LOW);
+    std::cout << "Writing LOW on pin " <<  (int) pin_ << std::endl;
 }
