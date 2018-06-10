@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/GTAeberhard/pwm_motor_control.svg?branch=master)](https://travis-ci.org/GTAeberhard/pwm_motor_control)
+
 # PWM Motor Control
 
 ## Introduction
