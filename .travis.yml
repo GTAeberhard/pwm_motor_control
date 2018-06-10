@@ -15,10 +15,14 @@ addons:
       - gcc-7
       - g++-7
 
-script:
+install:
   - export CC=gcc-7
-  - export CXX=g++-7
+  - export CXX="g++-7 -std=c++14"
+
+before_script:
   - mkdir build
   - cd build
   - cmake ..
-  - make
+
+script:
+  - make 
