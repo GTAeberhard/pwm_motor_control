@@ -30,7 +30,7 @@ script:
   - ctest
 
 after_success:
-  - coveralls --root . -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
+  - coveralls --root . -E ".*googletest.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
 
 notifications:
   email: false
