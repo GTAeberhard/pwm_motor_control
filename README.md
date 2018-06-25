@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/GTAeberhard/pwm_motor_control.svg?branch=master)](https://travis-ci.org/GTAeberhard/pwm_motor_control)
+[![Build Status](https://travis-ci.org/GTAeberhard/pwm_motor_control.svg?branch=master)](https://travis-ci.org/GTAeberhard/pwm_motor_control) [![Coverage Status](https://coveralls.io/repos/github/GTAeberhard/pwm_motor_control/badge.svg?branch=master)](https://coveralls.io/github/GTAeberhard/pwm_motor_control?branch=master)
 
 # PWM Motor Control
 
