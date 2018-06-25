@@ -15,14 +15,22 @@ addons:
       - gcc-7
       - g++-7
 
+before_install:
+  - pip install --user cpp-coveralls
+
 install:
   - export CC=gcc-7
   - export CXX="g++-7 -std=c++14"
 
 script:
-  - cmake -H. -Bbuild
+  - cmake -H. -Bbuild -DENABLE_COVERAGE=ON
   - cd build
   - cmake --build .
   - cd test
   - ctest
 
+after_success:
+  - coveralls --root . -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
+
+notifications:
+  email: false

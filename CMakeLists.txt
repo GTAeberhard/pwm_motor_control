@@ -3,6 +3,14 @@ project(pwm_motor_control)
 
 set(CMAKE_CXX_STANDARD 14)
 
+if(ENABLE_COVERAGE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g ")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftest-coverage")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+endif()
+
 find_package(GMock QUIET)
 if(NOT GMOCK_FOUND)
     configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
