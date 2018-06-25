@@ -19,10 +19,10 @@ install:
   - export CC=gcc-7
   - export CXX="g++-7 -std=c++14"
 
-before_script:
-  - mkdir build
-  - cd build
-  - cmake ..
-
 script:
-  - make 
+  - cmake -H. -Bbuild
+  - cd build
+  - cmake --build .
+  - cd test
+  - ctest
+
