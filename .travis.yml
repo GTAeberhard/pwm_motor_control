@@ -14,7 +14,6 @@ addons:
     packages:
       - gcc-7
       - g++-7
-      - gcov-7
 
 before_install:
   - pip install --user cpp-coveralls
@@ -22,7 +21,6 @@ before_install:
 install:
   - export CC=gcc-7
   - export CXX="g++-7 -std=c++14"
-  - export GCOV=gcov-7
 
 script:
   - cmake -H. -Bbuild -DENABLE_COVERAGE=ON
@@ -32,7 +30,7 @@ script:
   - ctest
 
 after_success:
-  - coveralls --root . -E ".*googletest.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
+  - coveralls --gcov gcov-7 --root . -E ".*googletest.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
 
 notifications:
   email: false
