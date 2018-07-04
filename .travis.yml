@@ -21,6 +21,7 @@ before_install:
 install:
   - export CC=gcc-7
   - export CXX="g++-7 -std=c++14"
+  - export GCOV=gcov-7
 
 script:
   - cmake -H. -Bbuild -DENABLE_COVERAGE=ON
