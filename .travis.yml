@@ -30,7 +30,7 @@ script:
   - ctest
 
 after_success:
-  - coveralls --gcov gcov-7 --root . -E ".*googletest.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
+  - coveralls --gcov gcov-7 --gcov-options '\-lp' --root ${TRAVIS_BUILD_DIR} --build-root ${TRAVIS_BUILD_DIR}/build --include gpio --include motor_control --exclude raspberrypi --exclude test
 
 notifications:
   email: false
