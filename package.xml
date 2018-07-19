@@ -1,0 +1,19 @@
+<package format="2">
+  <name>pwm_motor_control</name>
+  <version>1.0.0</version>
+  <description>
+    Library for controlling PWM motors and servos.
+  </description>
+
+  <author email="michael.aeberhard@gmail.com">Michael Aeberhard</author>
+  <maintainer email="michael.aeberhard@gmail.com">Michael Aeberhard</maintainer>
+  <license>MIT</license>
+
+  <url>https://github.com/GTAeberhard/pwm_motor_control</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <export>
+    <build_type>cmake</build_type>
+  </export>
+</package>

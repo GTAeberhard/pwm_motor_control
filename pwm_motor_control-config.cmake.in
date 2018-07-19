@@ -1,0 +1,17 @@
+# - Config file for the pwm_motor_control package
+# It defines the following variables
+#  PWM_MOTOR_CONTROL_INCLUDE_DIRS - include directories for FooBar
+#  PWM_MOTOR_CONTROL_LIBRARIES    - libraries to link against
+#  PWM_MOTOR_CONTROL_EXECUTABLE   - the bar executable
+
+# Compute paths
+get_filename_component(PWM_MOTOR_CONTROL_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(pwm_motor_control_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+
+# Our library dependencies (contains definitions for IMPORTED targets)
+if(NOT TARGET gpio AND NOT TARGET motor_control AND NOT pwm_motor_control_BINARY_DIR)
+  include("${PWM_MOTOR_CONTROL_CMAKE_DIR}/pwm_motor_controlTargets.cmake")
+endif()
+
+set(pwm_motor_control_LIBRARIES gpio motor_control)
+#set(FOOBAR_EXECUTABLE bar)
