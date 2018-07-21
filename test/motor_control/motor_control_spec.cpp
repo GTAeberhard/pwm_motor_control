@@ -2,11 +2,12 @@
 
 #define private public
 #define protected public
-#include "motor_control.h"
+#include <motor_control.h>
 #undef protected
 #undef private
 
-#include "gpio_mock.h"
+#include <mock_control_factory.h>
+#include <gpio_mock.h>
 
 class PwmMotorControlTest : public ::testing::Test
 {
@@ -17,17 +18,14 @@ protected:
         pin_output_direction_1= 3U;
         pin_output_direction_2= 4U;
 
-        auto output_pwm = std::make_unique<GpioPwmPinMock>(pin_output_pwm);
-        auto output_direction_1 = std::make_unique<GpioPinMock>(pin_output_direction_1);
-        auto output_direction_2 = std::make_unique<GpioPinMock>(pin_output_direction_2);
-
-        pin_output_pwm_raw_ptr_ = output_pwm.get();
-        pin_output_direction_1_raw_ptr_ = output_direction_1.get();
-        pin_output_direction_2_raw_ptr_ = output_direction_2.get();
-
-        motor_control = std::make_unique<PwmMotorControl>(std::move(output_pwm),
-                                                          std::move(output_direction_1),
-                                                          std::move(output_direction_2));
+        MockPwmControlFactory factory;
+        motor_control = factory.CreateMotorControl(pin_output_pwm,
+                                                   pin_output_direction_1,
+                                                   pin_output_direction_2);
+        
+        pin_output_pwm_raw_ptr_ = dynamic_cast<GpioPwmPinMock*>(motor_control->pin_pwm_.get());
+        pin_output_direction_1_raw_ptr_ = dynamic_cast<GpioPinMock*>(motor_control->pin_direction_1_.get());
+        pin_output_direction_2_raw_ptr_ = dynamic_cast<GpioPinMock*>(motor_control->pin_direction_2_.get());
     }
 
     uint8_t pin_output_pwm;

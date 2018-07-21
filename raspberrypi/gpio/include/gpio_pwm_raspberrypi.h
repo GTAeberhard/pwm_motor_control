@@ -10,6 +10,6 @@ public:
     ~RaspberryPiGpioPwmPin() {}
 
 private:
-    void WriteDutyCycleToPin(const uint16_t value);
-    void SetRangeOnDevice(const uint16_t range);
+    void WriteDutyCycleToPin(const uint16_t value) override;
+    void SetRangeOnDevice(const uint16_t range) override;
 };

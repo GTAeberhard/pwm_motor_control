@@ -9,7 +9,8 @@
 #include <gpio.h>
 #include <gpio_pwm.h>
 
-class PwmServoControl {
+class PwmServoControl
+{
 public:
     PwmServoControl(std::unique_ptr<GpioPwmPin> pin_pwm,
                     std::unique_ptr<GpioPin> pin_direction_1,

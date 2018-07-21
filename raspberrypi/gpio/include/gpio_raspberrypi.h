@@ -10,7 +10,7 @@ public:
     ~RaspberryPiGpioPin() {}
 
 private:
-    void WriteToPin(const uint8_t value);
-    void WriteHighToPin();
-    void WriteLowToPin();
+    void WriteToPin(const uint8_t value) override;
+    void WriteHighToPin() override;
+    void WriteLowToPin() override;
 };

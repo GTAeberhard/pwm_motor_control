@@ -9,7 +9,8 @@
 #include <gpio.h>
 #include <gpio_pwm.h>
 
-class PwmMotorControl {
+class PwmMotorControl
+{
 public:
     PwmMotorControl(std::unique_ptr<GpioPwmPin> pin_pwm,
                     std::unique_ptr<GpioPin> pin_direction_1,

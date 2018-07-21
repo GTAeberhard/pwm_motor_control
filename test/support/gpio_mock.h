@@ -1,3 +1,6 @@
+#ifndef GPIO_MOCK_H
+#define GPIO_MOCK_H
+
 #define protected public
 #include "gpio.h"
 #include "gpio_pwm.h"
@@ -23,3 +26,5 @@ public:
     MOCK_METHOD1(WriteDutyCycleToPin, void(const uint16_t duty_cycle));
     MOCK_METHOD1(SetRangeOnDevice, void(const uint16_t range));
 };
+
+#endif
