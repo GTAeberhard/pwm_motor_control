@@ -1,4 +1,4 @@
-#include "gpio_raspberrypi.h"
+#include <gpio_raspberrypi.h>
 
 RaspberryPiGpioPin::RaspberryPiGpioPin(uint8_t pin_number)
     : GpioPin(pin_number)

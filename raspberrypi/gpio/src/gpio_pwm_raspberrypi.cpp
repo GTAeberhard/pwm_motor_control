@@ -1,4 +1,4 @@
-#include "gpio_pwm_raspberrypi.h"
+#include <gpio_pwm_raspberrypi.h>
 
 RaspberryPiGpioPwmPin::RaspberryPiGpioPwmPin(uint8_t pin_number)
     : GpioPwmPin(pin_number)

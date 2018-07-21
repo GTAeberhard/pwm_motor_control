@@ -1,10 +1,10 @@
 #include <gmock/gmock.h>
 
 #define protected public
-#include "gpio_pwm.h"
+#include <gpio_pwm.h>
 #undef protected
 
-#include "gpio_mock.h"
+#include <gpio_mock.h>
 
 class GpioPwmPinTest : public ::testing::Test
 {

@@ -1,4 +1,4 @@
-#include "gpio_pwm.h"
+#include <gpio_pwm.h>
 
 GpioPwmPin::GpioPwmPin(const uint8_t pin_number)
     : pin_(pin_number), pwm_range_(255U)

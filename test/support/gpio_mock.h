@@ -2,8 +2,8 @@
 #define GPIO_MOCK_H
 
 #define protected public
-#include "gpio.h"
-#include "gpio_pwm.h"
+#include <gpio.h>
+#include <gpio_pwm.h>
 #undef protected
 
 class GpioPinMock : public GpioPin

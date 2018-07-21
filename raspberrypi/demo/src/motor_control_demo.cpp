@@ -4,9 +4,9 @@
 #include <signal.h>
 #include <termios.h>
 
-#include "gpio_raspberrypi.h"
-#include "gpio_pwm_raspberrypi.h"
-#include "motor_control.h"
+#include <gpio_raspberrypi.h>
+#include <gpio_pwm_raspberrypi.h>
+#include <motor_control.h>
 
 #define KEY_SPACEBAR    0x20
 #define KEY_BACKSPACE   0x7F

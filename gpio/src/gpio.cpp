@@ -1,4 +1,4 @@
-#include "gpio.h"
+#include <gpio.h>
 
 GpioPin::GpioPin(const uint8_t pin_number)
     : pin_(pin_number)

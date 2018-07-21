@@ -1,4 +1,4 @@
-#include "servo_control.h"
+#include <servo_control.h>
 
 PwmServoControl::PwmServoControl(std::unique_ptr<GpioPwmPin> pin_pwm,
                                  std::unique_ptr<GpioPin> pin_direction_1,

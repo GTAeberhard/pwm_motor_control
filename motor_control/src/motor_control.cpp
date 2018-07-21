@@ -1,4 +1,4 @@
-#include "motor_control.h"
+#include <motor_control.h>
 
 PwmMotorControl::PwmMotorControl(std::unique_ptr<GpioPwmPin> pin_pwm,
                                  std::unique_ptr<GpioPin> pin_direction_1,

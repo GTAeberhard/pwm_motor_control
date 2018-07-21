@@ -1,6 +1,6 @@
 #include <iostream>
 #include <wiringPi.h>
-#include "gpio.h"
+#include <gpio.h>
 
 class RaspberryPiGpioPin : public GpioPin
 {
