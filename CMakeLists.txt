@@ -3,28 +3,6 @@ project(pwm_motor_control)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(PWM_MOTOR_CONTROL_MAJOR_VERSION 0)
-set(PWM_MOTOR_CONTROL_MINOR_VERSION 1)
-set(PWM_MOTOR_CONTROL_PATCH_VERSION 0)
-set(PWM_MOTOR_CONTROL_VERSION
-    ${PWM_MOTOR_CONTROL_MAJOR_VERSION}.${PWM_MOTOR_CONTROL_MINOR_VERSION}.${PWM_MOTOR_CONTROL_PATCH_VERSION})
-
-set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
-set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
-set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
-set(INSTALL_CMAKE_DIR lib/CMake/pwm_motor_control CACHE PATH "Installation directory for CMake files")
-
-foreach(p LIB BIN INCLUDE CMAKE)
-  set(var INSTALL_${p}_DIR)
-  if(NOT IS_ABSOLUTE "${${var}}")
-    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
-  endif()
-endforeach()
-
-include_directories(
-  "${PROJECT_SOURCE_DIR}"
-  "${PROJECT_BINARY_DIR}")
-
 if(ENABLE_COVERAGE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g ")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
@@ -56,29 +34,25 @@ if(WIRINGPI_LIB)
     add_subdirectory(raspberrypi)
 endif()
 
-export(TARGETS gpio motor_control
-    FILE "${PROJECT_BINARY_DIR}/pwm_motor_controlTargets.cmake")
+include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
 
-export(PACKAGE pwm_motor_control)
+install(FILES package.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME})
 
-file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}"
-    "${INSTALL_INCLUDE_DIR}")
+install(
+    EXPORT ${PROJECT_NAME}
+    FILE ${PROJECT_NAME}Targets.cmake
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake)
 
-set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
-configure_file(pwm_motor_control-config.cmake.in
-    "${PROJECT_BINARY_DIR}/pwm_motor_control-config.cmake" @ONLY)
+set(PROJECT_INCLUDE_DIR "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}/")
 
-set(CONF_INCLUDE_DIRS "\${PWM_MOTOR_CONTROL_CMAKE_DIR}/${REL_INCLUDE_DIR}")
-configure_file(pwm_motor_control-config.cmake.in
-    "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/pwm_motor_control-config.cmake" @ONLY)
+configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}-config.cmake.in"
+    ${PROJECT_NAME}-config.cmake
+    PATH_VARS PROJECT_INCLUDE_DIR CMAKE_INSTALL_LIBDIR
+    INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake
+    NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 
-configure_file(pwm_motor_control-config-version.cmake.in
-    "${PROJECT_BINARY_DIR}/pwm_motor_control-config-version.cmake" @ONLY)
-
-install(FILES
-    "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/pwm_motor_control-config.cmake"
-    "${PROJECT_BINARY_DIR}/pwm_motor_control-config-version.cmake"
-    DESTINATION "${INSTALL_CMAKE_DIR}")
-
-install(EXPORT pwm_motor_controlTargets DESTINATION
-    "${INSTALL_CMAKE_DIR}")
+install(
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake)
