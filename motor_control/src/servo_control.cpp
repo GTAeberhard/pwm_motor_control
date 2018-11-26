@@ -9,11 +9,11 @@ PwmServoControl::PwmServoControl(std::unique_ptr<GpioPwmPin> pin_pwm,
 {
 }
 
-void PwmServoControl::SetAngle(int16_t angle)
+void PwmServoControl::SetAngle(int8_t angle)
 {
     uint8_t corrected_angle = std::abs(angle);
-    corrected_angle = std::min(corrected_angle, (uint8_t) 180U);
-    float percent_displacement = (float) corrected_angle / 180.0F;
+    corrected_angle = std::min(corrected_angle, (uint8_t) angle_max_);
+    float percent_displacement = (float) corrected_angle / angle_max_;
 
     if (angle >= 0)
     {

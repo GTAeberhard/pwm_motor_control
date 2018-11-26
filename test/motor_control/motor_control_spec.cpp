@@ -46,50 +46,46 @@ TEST_F(PwmMotorControlTest, Initialize)
     EXPECT_EQ(motor_control->pin_direction_2_->pin_, pin_output_direction_2);
 }
 
-TEST_F(PwmMotorControlTest, ForwardPercentPower50)
+struct TestMotorPwm
 {
-    int8_t percent_motor_power = 50;
+    int8_t percent_motor_power;
+    uint8_t expected_pwm_value;
+};
 
-    uint8_t expected_pwm_value = 128U;
+class TestMotorSpeeds : public PwmMotorControlTest,
+                        public ::testing::WithParamInterface<TestMotorPwm>
+{};
+
+TEST_P(TestMotorSpeeds, MotorSpeeds)
+{
+    int8_t percent_motor_power = GetParam().percent_motor_power;
+
+    uint8_t expected_pwm_value = GetParam().expected_pwm_value;
     EXPECT_CALL(*pin_output_pwm_raw_ptr_, WriteDutyCycleToPin(expected_pwm_value)).Times(1);
-    EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteHighToPin()).Times(1);
-    EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteLowToPin()).Times(1);
+
+    if (percent_motor_power >= 0)
+    {
+        EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteHighToPin()).Times(1);
+        EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteLowToPin()).Times(1);
+    }
+    else
+    {
+        EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteLowToPin()).Times(1);
+        EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteHighToPin()).Times(1);        
+    }
 
     motor_control->SetSpeed(percent_motor_power);
 }
 
-TEST_F(PwmMotorControlTest, BackwardPercentPower50)
-{
-    int8_t percent_motor_power = -50;
+INSTANTIATE_TEST_CASE_P(TypicalSpeeds,
+                        TestMotorSpeeds,
+                        ::testing::Values(TestMotorPwm{0, 0U},
+                                          TestMotorPwm{100, 255U},
+                                          TestMotorPwm{-100, 255U},
+                                          TestMotorPwm{50, 128U},
+                                          TestMotorPwm{-50, 128U}));
 
-    uint8_t expected_pwm_value = 128U;
-    EXPECT_CALL(*pin_output_pwm_raw_ptr_, WriteDutyCycleToPin(expected_pwm_value)).Times(1);
-    EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteLowToPin()).Times(1);
-    EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteHighToPin()).Times(1);
-
-    motor_control->SetSpeed(percent_motor_power);
-}
-
-TEST_F(PwmMotorControlTest, LargerPositive100Percent)
-{
-    int8_t percent_motor_power = 110;
-
-    uint8_t expected_pwm_value = 255U;
-    EXPECT_CALL(*pin_output_pwm_raw_ptr_, WriteDutyCycleToPin(expected_pwm_value)).Times(1);
-    EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteHighToPin()).Times(1);
-    EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteLowToPin()).Times(1);
-
-    motor_control->SetSpeed(percent_motor_power);
-}
-
-TEST_F(PwmMotorControlTest, LowerNegative100Percent)
-{
-    int8_t percent_motor_power = -110;
-
-    uint8_t expected_pwm_value = 255U;
-    EXPECT_CALL(*pin_output_pwm_raw_ptr_, WriteDutyCycleToPin(expected_pwm_value)).Times(1);
-    EXPECT_CALL(*pin_output_direction_1_raw_ptr_, WriteLowToPin()).Times(1);
-    EXPECT_CALL(*pin_output_direction_2_raw_ptr_, WriteHighToPin()).Times(1);
-
-    motor_control->SetSpeed(percent_motor_power);
-}
+INSTANTIATE_TEST_CASE_P(OutOfRangeSpeeds,
+                        TestMotorSpeeds,
+                        ::testing::Values(TestMotorPwm{120, 255U},
+                                          TestMotorPwm{-120, 255U}));
